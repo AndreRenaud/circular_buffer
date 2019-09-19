@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Install tools
-          command: apk add --no-cache gcc make valgrind libc-dev
+          command: apk add --quiet --no-cache gcc make valgrind libc-dev
       - run:
           name: Make
           command: make
