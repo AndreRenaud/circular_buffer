@@ -97,10 +97,11 @@ size_t circular_buffer_read(struct circular_buffer *buf, void *data, size_t max_
 		have_read = to_read;
 		if (to_read < max_len) {
 			assert(buf->tail == 0);
+			uint8_t *d8 = data;
 			to_read = max_len - to_read;
 			if (to_read > buf->head)
 				to_read = buf->head;
-			memcpy(&data[have_read], buf->buffer, to_read);
+			memcpy(&d8[have_read], buf->buffer, to_read);
 			buf->tail = (buf->tail + to_read) % buf->size;
 			have_read += to_read;
 		}
