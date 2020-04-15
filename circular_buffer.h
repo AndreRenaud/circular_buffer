@@ -3,11 +3,8 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <stddef.h>
 
 struct circular_buffer;
-
-typedef void (*circular_notify)(struct circular_buffer *buf, void *user_data);
 
 struct circular_buffer {
 	uint8_t *buffer;
@@ -15,13 +12,13 @@ struct circular_buffer {
 	size_t head; /* Position of next write */
 	size_t tail; /* Position of next read (== head if empty/full) */
 	bool full;
-	circular_notify notify;
-	void *notify_data;
+	uint64_t bytes_written;
+	uint64_t bytes_read;
 };
 
-int circular_buffer_init(struct circular_buffer *buf, uint8_t *buffer, size_t buffer_size, circular_notify notify, void *notify_data);
+int circular_buffer_init(struct circular_buffer *buf, uint8_t *buffer, size_t buffer_size);
 
-int circular_buffer_write(struct circular_buffer *buf, const void *data, size_t data_len, bool allow_overwrite);
+size_t circular_buffer_write(struct circular_buffer *buf, const void *data, size_t data_len);
 size_t circular_buffer_read(struct circular_buffer *buf, void *data, size_t max_len);
 size_t circular_buffer_free_space(struct circular_buffer *buf);
 size_t circular_buffer_used_space(struct circular_buffer *buf);
